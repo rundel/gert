@@ -43,12 +43,8 @@ make_key_cb <- function(file, password){
   function(){
     key <- read_key(file, password = password)
     tmp_pass <- paste(sample(letters, 10, replace = TRUE), collapse = "")
-    write_ssh(key$pubkey, tmp_pub <- tempfile())
-    write_pem(key, tmp_key <- tempfile(), password = tmp_pass)
-    if(.Platform$OS.type == "unix"){
-      Sys.chmod(tmp_pub, '0644')
-      Sys.chmod(tmp_key, '0400')
-    }
+    tmp_pub <- write_ssh(key$pubkey)
+    tmp_key <- write_pem(key, password = tmp_pass)
     c(tmp_pub, tmp_key, tmp_pass)
   }
 }
