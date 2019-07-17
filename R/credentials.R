@@ -16,15 +16,15 @@ make_key_cb <- function(ssh_key = NULL, host = NULL, password = askpass){
 
     # NB: pkcs1 is the only format that works on all libssh2 configurations
     tmp_key <- if(inherits(key, c("rsa", "dsa", "ecdsa"))){
-      write_pkcs1(key, tempfile())
+      write_pkcs1(key, tempfile(), password = 'test')
     } else {
-      write_pem(key, tempfile())
+      write_pem(key, tempfile(), password = 'test')
     }
     if(.Platform$OS.type == "unix"){
       Sys.chmod(tmp_pub, '0644')
       Sys.chmod(tmp_key, '0400')
     }
-    c(tmp_pub, tmp_key, "")
+    c(tmp_pub, tmp_key, "test")
   }
 }
 
